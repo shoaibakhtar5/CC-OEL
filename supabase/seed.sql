@@ -1,0 +1,2 @@
+-- Optional local/testing seed.
+-- Insert notices from the app after creating a real user so RLS stays meaningful.

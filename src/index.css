@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply rounded-3xl border border-white/70 bg-white/[0.78] p-5 shadow-soft backdrop-blur-2xl transition-colors dark:border-white/10 dark:bg-white/[0.06] sm:p-6;
+  }
+
+  .notice-card {
+    @apply animate-fade-in rounded-3xl border border-white/80 bg-white/90 p-5 shadow-soft transition duration-200 hover:-translate-y-0.5 hover:shadow-glow dark:border-white/10 dark:bg-white/[0.065] sm:p-6;
+  }
+
+  .btn-primary {
+    @apply inline-flex h-11 items-center gap-2 rounded-full bg-teal-600 px-5 text-sm font-bold text-white shadow-lg shadow-teal-600/20 transition hover:bg-teal-500 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-secondary {
+    @apply inline-flex h-11 items-center gap-2 rounded-full border border-slate-200 bg-white px-4 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10;
+  }
+
+  .icon-button {
+    @apply inline-grid h-11 w-11 place-items-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10;
+  }
+
+  .field-label {
+    @apply block text-sm font-bold text-slate-700 dark:text-slate-200;
+  }
+
+  .input-shell {
+    @apply mt-2 flex h-12 items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 text-slate-500 shadow-sm transition focus-within:border-teal-400 focus-within:ring-4 focus-within:ring-teal-500/10 dark:border-white/10 dark:bg-slate-950/55 dark:text-slate-400;
+  }
+
+  .input {
+    @apply w-full min-w-0 border-0 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400 dark:text-white;
+  }
+
+  .input-standalone {
+    @apply mt-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm transition focus:border-teal-400 focus:outline-none focus:ring-4 focus:ring-teal-500/10 dark:border-white/10 dark:bg-slate-950/55;
+  }
+
+  .segmented-button {
+    @apply rounded-xl px-4 py-2 text-sm font-bold text-slate-500 transition dark:text-slate-400;
+  }
+
+  .segmented-button-active {
+    @apply bg-white text-slate-950 shadow-sm dark:bg-white/10 dark:text-white;
+  }
+
+  .category-chip {
+    @apply whitespace-nowrap rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-600 transition hover:border-teal-300 hover:text-teal-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:border-teal-400/40 dark:hover:text-teal-200;
+  }
+
+  .category-chip-active {
+    @apply border-teal-500 bg-teal-600 text-white hover:text-white dark:border-teal-400 dark:bg-teal-500 dark:text-slate-950;
+  }
+
+  .spinner {
+    @apply inline-block h-4 w-4 rounded-full border-2 border-current border-r-transparent align-[-2px];
+    animation: spin 0.8s linear infinite;
+  }
+
+  .skeleton {
+    @apply bg-[linear-gradient(90deg,rgba(226,232,240,0.7),rgba(248,250,252,0.95),rgba(226,232,240,0.7))] bg-[length:200%_100%] animate-shimmer dark:bg-[linear-gradient(90deg,rgba(51,65,85,0.55),rgba(100,116,139,0.42),rgba(51,65,85,0.55))];
+  }
+
+  .prose-notice {
+    @apply max-w-none text-sm leading-7 text-slate-700 dark:text-slate-200;
+  }
+
+  .prose-notice p {
+    @apply my-3;
+  }
+
+  .prose-notice ul,
+  .prose-notice ol {
+    @apply my-3 pl-5;
+  }
+
+  .prose-notice ul {
+    @apply list-disc;
+  }
+
+  .prose-notice ol {
+    @apply list-decimal;
+  }
+
+  .prose-notice a {
+    @apply font-semibold text-teal-700 underline underline-offset-4 dark:text-teal-300;
+  }
+
+  .prose-notice strong {
+    @apply font-black text-slate-950 dark:text-white;
+  }
+}
