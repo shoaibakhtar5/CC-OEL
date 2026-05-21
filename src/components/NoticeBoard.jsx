@@ -1,5 +1,5 @@
-import { Search, Wifi, WifiOff } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { RefreshCw, Search, Wifi, WifiOff } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
 import { categories } from '../constants/categories';
 import { fetchNotices } from '../lib/noticesApi';
@@ -17,7 +17,7 @@ export default function NoticeBoard({ user }) {
   const [category, setCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
 
-  async function loadNotices({ quiet = false } = {}) {
+  const loadNotices = useCallback(async ({ quiet = false } = {}) => {
     try {
       if (!quiet) setLoading(true);
       const data = await fetchNotices();
@@ -27,31 +27,54 @@ export default function NoticeBoard({ user }) {
     } finally {
       setLoading(false);
     }
-  }
-
-  useEffect(() => {
-    loadNotices();
   }, []);
 
   useEffect(() => {
+    loadNotices();
+  }, [loadNotices]);
+
+  useEffect(() => {
+    const fallbackRefresh = window.setInterval(() => {
+      loadNotices({ quiet: true });
+    }, 15000);
+
+    const connectingTimeout = window.setTimeout(() => {
+      setRealtimeStatus((currentStatus) =>
+        currentStatus === 'CONNECTING' ? 'POLLING' : currentStatus,
+      );
+    }, 8000);
+
     const channel = supabase
       .channel('public:notices')
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'notices' },
-        () => loadNotices({ quiet: true }),
+        async () => {
+          setRealtimeStatus('SUBSCRIBED');
+          await loadNotices({ quiet: true });
+        },
       )
       .subscribe((status) => {
         setRealtimeStatus(status);
-        if (status === 'CHANNEL_ERROR') {
-          toast.error('Realtime connection interrupted. Notices will retry.');
+        if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+          toast.error('Realtime delayed. Auto-refresh fallback is active.');
         }
       });
 
     return () => {
+      window.clearInterval(fallbackRefresh);
+      window.clearTimeout(connectingTimeout);
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [loadNotices]);
+
+  const isRealtimeLive = realtimeStatus === 'SUBSCRIBED';
+  const isPolling = realtimeStatus === 'POLLING' || realtimeStatus === 'TIMED_OUT';
+  const statusLabel = isRealtimeLive
+    ? 'Live'
+    : isPolling
+      ? 'Auto-sync'
+      : 'Connecting';
 
   const filteredNotices = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
@@ -84,15 +107,17 @@ export default function NoticeBoard({ user }) {
                   className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${
                     realtimeStatus === 'SUBSCRIBED'
                       ? 'bg-red-100 text-red-800 dark:bg-red-400/15 dark:text-red-200'
-                      : 'bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-200'
+                      : 'bg-amber-100 text-amber-800 dark:bg-amber-400/15 dark:text-amber-200'
                   }`}
                 >
-                  {realtimeStatus === 'SUBSCRIBED' ? (
+                  {isRealtimeLive ? (
                     <Wifi size={13} />
+                  ) : isPolling ? (
+                    <RefreshCw size={13} />
                   ) : (
                     <WifiOff size={13} />
                   )}
-                  {realtimeStatus === 'SUBSCRIBED' ? 'Live' : 'Connecting'}
+                  {statusLabel}
                 </span>
               </div>
               <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">

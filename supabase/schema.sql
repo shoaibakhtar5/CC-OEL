@@ -90,4 +90,19 @@ create trigger on_auth_user_created
   for each row execute function public.handle_new_user();
 
 -- Enable Supabase Realtime for notice changes.
-alter publication supabase_realtime add table public.notices;
+-- This block is safe to run more than once.
+alter table public.notices replica identity full;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_publication_tables
+    where pubname = 'supabase_realtime'
+      and schemaname = 'public'
+      and tablename = 'notices'
+  ) then
+    alter publication supabase_realtime add table public.notices;
+  end if;
+end;
+$$;
