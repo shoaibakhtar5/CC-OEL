@@ -56,7 +56,7 @@ export default function NoticeForm({ onNoticeCreated, user }) {
 
   return (
     <aside className="panel">
-      <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-700 dark:text-teal-300">
+      <p className="text-sm font-semibold uppercase tracking-[0.18em] text-red-800 dark:text-red-200">
         Create notice
       </p>
       <h2 className="mt-2 text-2xl font-black">Publish an update</h2>

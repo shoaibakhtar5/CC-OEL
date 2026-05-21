@@ -39,11 +39,11 @@ export default function Auth({ authOpen, authLoading, onClose, user }) {
     return (
       <aside className="panel animate-fade-in">
         <div className="flex items-start gap-3">
-          <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200">
+          <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-red-100 text-red-800 dark:bg-red-400/15 dark:text-red-200">
             <ShieldCheck size={22} />
           </div>
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-700 dark:text-emerald-300">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-red-800 dark:text-red-200">
               Signed in
             </p>
             <h2 className="mt-1 text-xl font-bold">Ready to post notices</h2>
@@ -64,7 +64,7 @@ export default function Auth({ authOpen, authLoading, onClose, user }) {
     <aside className={`${authOpen ? 'block' : 'hidden lg:block'} panel`}>
       <div className="mb-6 flex items-center justify-between gap-3">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-700 dark:text-teal-300">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-red-800 dark:text-red-200">
             Secure access
           </p>
           <h2 className="mt-1 text-2xl font-bold">

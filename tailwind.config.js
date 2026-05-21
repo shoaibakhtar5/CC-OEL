@@ -9,7 +9,7 @@ export default {
       },
       boxShadow: {
         soft: '0 20px 70px rgba(15, 23, 42, 0.12)',
-        glow: '0 24px 80px rgba(20, 184, 166, 0.22)',
+        glow: '0 24px 80px rgba(127, 29, 29, 0.24)',
       },
       animation: {
         'fade-in': 'fadeIn 0.35s ease-out both',
